@@ -1,71 +1,49 @@
 import 'package:flutter/material.dart';
-import 'pages/first_pages.dart';
-import 'pages/second_pages.dart';
-import 'pages/third_pages.dart';
-import 'pages/cuarto.dart';
-import 'pages/quinto.dart';
 
-void main() => runApp(fridaApp());
+void main() => runApp(MiAgendafotoApp());
 
-class fridaApp extends StatelessWidget {
+class MiAgendafotoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Final Alvaro',
-      home: PaginaInicio(),
-    ); //Fin Material App
-  } //Fin Widget
-} //Fin de fridaApp
+    return new MaterialApp(title: "No tiene efecto", home: new PaginaPrincipal(title: "GridView galeria de imagenes ")); //fin de material
+  } //fin de widget
+} // fin de class MiAgendafotoApp
 
-class PaginaInicio extends StatefulWidget {
+class PaginaPrincipal extends StatefulWidget {
+  final String title;
   @override
-  _PaginaInicioState createState() => _PaginaInicioState();
-} //Fin Clase Pagina Inicio
+  PaginaPrincipal({this.title}) : super();
+  @override
+  State<StatefulWidget> createState() {
+    return new PaginaPrincipalState();
+  } //fin de state
+} //fin de PaginaPrincipal
 
-class _PaginaInicioState extends State<PaginaInicio> {
-  int _index = 0;
+class PaginaPrincipalState extends State<PaginaPrincipal> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; //Variable size
-    Widget child; //Widget creado por usuario
-    switch (_index) {
-      case 0:
-        child = MaterialApp(debugShowCheckedModeBanner: false, home: new FirstPage());
-        break;
-      case 1:
-        child = MaterialApp(debugShowCheckedModeBanner: false, home: new SecondPage());
-        break;
-      case 2:
-        child = MaterialApp(debugShowCheckedModeBanner: false, home: new ThirdPage());
-        break;
-      case 3:
-        child = MaterialApp(debugShowCheckedModeBanner: false, home: new CuartaPage());
-        break;
-      case 4:
-        child = MaterialApp(debugShowCheckedModeBanner: false, home: new QuintaPage());
-        break;    
-    } //Fin Switch Selecciona Paginas
-    return Scaffold(
-      body: SizedBox.expand(child: child),
-      bottomNavigationBar: BottomNavigationBar(backgroundColor: Colors.red, onTap: (newIndex) => setState(() => _index = newIndex), currentIndex: _index, items: [
-        
-        BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.blue, size: 30.0), //icon
-            title: Text('Inicio', style: TextStyle(color: Colors.black),)), 
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person_add_outlined, color: Colors.green, size: 30.0), //icon
-            title: Text('Registro', style: TextStyle(color: Colors.black),)), 
-        BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline_outlined, color: Colors.black, size: 30.0), //icon
-            title: Text('Noticias', style: TextStyle(color: Colors.black),)),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.location_pin, color: Colors.red, size: 30.0), //icon
-            title: Text('Entranamiento ', style: TextStyle(color: Colors.black),)),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined, color: Colors.purple, size: 30.0), //icon
-            title: Text('Pendientes', style: TextStyle(color: Colors.black),)),            
-      ]), // bottom
-    ); //Fin Scaffold
-  } //Fin Widget
-} //Fin Pagina Inicio
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text(widget.title),
+      ),
+      body: new GridView.extent(
+        maxCrossAxisExtent: 150.0,
+        mainAxisSpacing: 5.0,
+        crossAxisSpacing: 5.0,
+        padding: const EdgeInsets.all(5.0),
+        children: _buildGridTiles(29),
+      ), //fin de gridview
+    ); // fin de scaffold
+  } // fin de widget
+} // fin class PaginaPrincipalState
+
+List<Widget> _buildGridTiles(numberOfTiles) {
+  List<Container> containers = new List<Container>.generate(numberOfTiles, (int index) {
+    //index = 0, 1, 2,...
+    final imageName = index < 9 ? 'images/image0${index + 1}.JPG' : 'images/image${index + 1}.JPG';
+    return new Container(
+      child: new Image.asset(imageName, fit: BoxFit.fill),
+    );
+  });
+  return containers;
+}
